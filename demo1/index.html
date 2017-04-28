@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bodies - 物体</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <script src="../js/matter.js"></script>
+    <script>
+        // 简写
+        var Engine = Matter.Engine,
+            Render = Matter.Render,
+            World = Matter.World,
+            Bodies = Matter.Bodies,
+            Composites = Matter.Composites,
+            Body = Matter.Body,
+            Constraint = Matter.Constraint,
+            MouseConstraint = Matter.MouseConstraint,
+            Common = Matter.Common,
+            Events = Matter.Events;
+
+
+        // 创建引擎
+        var engine = Engine.create();
+
+        // 创建渲染器
+        var render = Render.create({
+            element: document.body,
+            engine: engine,
+            options: {
+                wireframes : false
+            }
+        });
+
+        // 墙壁
+        var offset = 5;
+        World.add(engine.world, [
+            Bodies.rectangle(400, -offset, 800.5 + 2 * offset, 50.5, { isStatic: true }),
+            Bodies.rectangle(400, 600 + offset, 800.5 + 2 * offset, 50.5, { isStatic: true }),
+            Bodies.rectangle(800 + offset, 300, 50.5, 600.5 + 2 * offset, { isStatic: true }),
+            Bodies.rectangle(-offset, 300, 50.5, 600.5 + 2 * offset, { isStatic: true })
+        ]);
+
+        // 鼠标约束
+        var mouseConstraint = MouseConstraint.create(engine, {
+            element: render.canvas
+        });
+
+        World.add(engine.world, mouseConstraint);
+
+        // 运行引擎
+        Engine.run(engine);
+        Render.run(render);
+
+
+        // 创建刚体
+
+        var rect = Bodies.rectangle(200, 100, 50, 50), // 矩形 (x轴, y轴, 宽, 高)
+            circle = Bodies.circle(300, 100, 25), // 圆 (x轴, y轴, 半径)
+            polygon = Bodies.polygon(450, 100, 5, 25), // 多边形 (x轴, y轴, 边数, 半径)
+            trapezoid = Bodies.trapezoid(590, 100, 50, 50, 3); // 三角形 (x轴, y轴, 宽, 高, 坡度)
+
+        // // 将刚体添加到世界中
+        World.add(engine.world, [rect, circle, polygon, trapezoid]);
+
+    </script>
+</body>
+</html>
